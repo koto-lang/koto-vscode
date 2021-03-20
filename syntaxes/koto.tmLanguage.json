@@ -1,0 +1,175 @@
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "Koto",
+  "patterns": [
+    {
+      "include": "#comment-block"
+    },
+    {
+      "name": "keyword.comment.line.koto",
+      "match": "#.*"
+    },
+    {
+      "include": "#keywords"
+    },
+    {
+      "include": "#numbers"
+    },
+    {
+      "include": "#operators"
+    },
+    {
+      "include": "#punctuation"
+    },
+    {
+      "include": "#strings"
+    },
+    {
+      "include": "#identifiers"
+    }
+  ],
+  "repository": {
+    "comment-block": {
+      "name": "comment.block.koto",
+      "begin": "#-",
+      "end": "-#",
+      "patterns": [
+        {
+          "name": "constant.character.escape.koto",
+          "match": "\\\\."
+        },
+        {
+          "include": "#comment-block"
+        }
+      ]
+    },
+    "identifiers": {
+      "patterns": [
+        {
+          "name": "entity.name.function.koto",
+          "match": "\\b([[:alpha:]_][[:alnum:]_]*)(?=\\:)\\b"
+        },
+        {
+          "name": "entity.name.function.koto",
+          "match": "\\b(?!\\.\\.)(?<=\\.)([[:alpha:]_][[:alnum:]_]*)\\b"
+        }
+      ]
+    },
+    "keywords": {
+      "patterns": [
+        {
+          "name": "constant.language.koto",
+          "match": "\\b(false|true)\\b"
+        },
+        {
+          "name": "constant.language.self.koto",
+          "match": "\\b(self)\\b"
+        },
+        {
+          "name": "support.function.koto",
+          "match": "\\b(assert|assert_eq|assert_ne|assert_near)\\b"
+        },
+        {
+          "name": "keyword.control.koto",
+          "match": "\\b(catch|finally|for|in|loop|return|throw|try|until|while|yield)\\b"
+        },
+        {
+          "name": "keyword.control.conditional.koto",
+          "match": "\\b(else|if|match|switch|then)\\b"
+        },
+        {
+          "name": "keyword.control.import.koto",
+          "match": "\\b(export|from|import)\\b"
+        }
+      ]
+    },
+    "numbers": {
+      "patterns": [
+        {
+          "name": "constant.numeric.koto",
+          "match": "\\b-?[0-9]+\\b"
+        },
+        {
+          "name": "constant.numeric.koto",
+          "match": "\\b-?[0-9]+.?[0-9]+(e[-+]?[0-9]+)?\\b"
+        },
+        {
+          "name": "constant.numeric.koto",
+          "match": "\\b-?0b[01]+\\b"
+        },
+        {
+          "name": "constant.numeric.koto",
+          "match": "\\b-?0o[0-7]+\\b"
+        },
+        {
+          "name": "constant.numeric.koto",
+          "match": "\\b-?0x[0-9a-fA-F]+\\b"
+        }
+      ]
+    },
+    "operators": {
+      "patterns": [
+        {
+          "name": "keyword.operator.koto",
+          "match": "\\b(and|not|or)\\b"
+        },
+        {
+          "name": "keyword.operator.koto",
+          "match": "\\+|-|%|\\*|\\/"
+        },
+        {
+          "name": "keyword.operator.koto",
+          "match": "\\+=|-=|\\*=|/=|%="
+        },
+        {
+          "name": "keyword.operator.koto",
+          "match": "==?|<=?|>=?"
+        },
+        {
+          "name": "keyword.operator.koto",
+          "match": "\\.\\.=?"
+        }
+      ]
+    },
+    "punctuation": {
+      "patterns": [
+        {
+          "name": "punctuation.brackets.curly.koto",
+          "match": "\\{|\\}"
+        },
+        {
+          "name": "punctuation.brackets.round.koto",
+          "match": "\\(|\\)"
+        },
+        {
+          "name": "punctuation.brackets.square.koto",
+          "match": "\\[|\\]"
+        },
+        {
+          "name": "punctuation.comma.koto",
+          "match": ","
+        },
+        {
+          "name": "punctuation.definition.parameters.koto",
+          "match": "\\|"
+        },
+        {
+          "name": "punctuation.meta.decorator.koto",
+          "match": "@"
+        }
+      ]
+    },
+    "strings": {
+      "name": "string.quoted.double.koto",
+      "begin": "\"",
+      "end": "\"",
+      "patterns": [
+        {
+          "name": "constant.character.escape.koto",
+          "match": "\\\\."
+        }
+      ]
+    }
+  },
+  "scopeName": "source.koto"
+}
