@@ -1,34 +1,40 @@
 {
   "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
   "name": "Koto",
-  "patterns": [
-    {
-      "include": "#comment-block"
-    },
-    {
-      "name": "keyword.comment.line.koto",
-      "match": "#.*"
-    },
-    {
-      "include": "#keywords"
-    },
-    {
-      "include": "#numbers"
-    },
-    {
-      "include": "#operators"
-    },
-    {
-      "include": "#punctuation"
-    },
-    {
-      "include": "#strings"
-    },
-    {
-      "include": "#identifiers"
-    }
-  ],
+  "patterns": [{ "include": "#all" }],
   "repository": {
+    "all": {
+      "patterns": [
+        {
+          "include": "#comment-block"
+        },
+        {
+          "name": "keyword.comment.line.koto",
+          "match": "#.*"
+        },
+        {
+          "include": "#keyword"
+        },
+        {
+          "include": "#number"
+        },
+        {
+          "include": "#operator"
+        },
+        {
+          "include": "#punctuation"
+        },
+        {
+          "include": "#section"
+        },
+        {
+          "include": "#string"
+        },
+        {
+          "include": "#identifier"
+        }
+      ]
+    },
     "comment-block": {
       "name": "comment.block.koto",
       "begin": "#-",
@@ -43,8 +49,12 @@
         }
       ]
     },
-    "identifiers": {
+    "identifier": {
       "patterns": [
+        {
+          "name": "variable.name",
+          "match": "([[:alpha:]_][[:alnum:]_]*)"
+        },
         {
           "name": "entity.name.function.koto",
           "match": "\\b([[:alpha:]_][[:alnum:]_]*)(?=\\:)\\b"
@@ -55,7 +65,7 @@
         }
       ]
     },
-    "keywords": {
+    "keyword": {
       "patterns": [
         {
           "name": "constant.language.koto",
@@ -80,10 +90,14 @@
         {
           "name": "keyword.control.import.koto",
           "match": "\\b(export|from|import)\\b"
+        },
+        {
+          "name": "keyword.other",
+          "match": "\\b(debug)\\b"
         }
       ]
     },
-    "numbers": {
+    "number": {
       "patterns": [
         {
           "name": "constant.numeric.koto",
@@ -107,7 +121,7 @@
         }
       ]
     },
-    "operators": {
+    "operator": {
       "patterns": [
         {
           "name": "keyword.operator.koto",
@@ -134,16 +148,12 @@
     "punctuation": {
       "patterns": [
         {
-          "name": "punctuation.brackets.curly.koto",
-          "match": "\\{|\\}"
-        },
-        {
           "name": "punctuation.brackets.round.koto",
           "match": "\\(|\\)"
         },
         {
-          "name": "punctuation.brackets.square.koto",
-          "match": "\\[|\\]"
+          "name": "punctuation.dot.koto",
+          "match": "\\."
         },
         {
           "name": "punctuation.comma.koto",
@@ -159,14 +169,93 @@
         }
       ]
     },
-    "strings": {
+    "section": {
+      "patterns": [
+        {
+          "name": "punctuation.brackets.curly.koto",
+          "begin": "{",
+          "end": "}",
+          "patterns": [{ "include": "#all" }]
+        },
+        {
+          "name": "punctuation.brackets.square.koto",
+          "begin": "\\[",
+          "end": "]",
+          "patterns": [{ "include": "#all" }]
+        }
+      ]
+    },
+    "string": {
+      "patterns": [
+        {
+          "include": "#string-single-quoted"
+        },
+        {
+          "include": "#string-double-quoted"
+        }
+      ]
+    },
+    "string-single-quoted": {
+      "name": "string.quoted.single.koto",
+      "begin": "'",
+      "end": "'",
+      "patterns": [
+        {
+          "include": "#string-escape"
+        },
+        {
+          "include": "#string-template"
+        }
+      ]
+    },
+    "string-double-quoted": {
       "name": "string.quoted.double.koto",
       "begin": "\"",
       "end": "\"",
       "patterns": [
         {
+          "include": "#string-escape"
+        },
+        {
+          "include": "#string-template"
+        }
+      ]
+    },
+    "string-escape": {
+      "patterns": [
+        {
           "name": "constant.character.escape.koto",
-          "match": "\\\\."
+          "match": "\\\\['$rnt\"\\\\]"
+        },
+        {
+          "name": "constant.character.escape.koto",
+          "match": "\\\\$"
+        },
+        {
+          "name": "constant.character.escape.koto",
+          "match": "\\\\x[0-9a-fA-F]{2}"
+        },
+        {
+          "name": "constant.character.escape.koto",
+          "match": "\\\\u{[0-9a-fA-F]{1,6}}"
+        }
+      ]
+    },
+    "string-template": {
+      "patterns": [
+        {
+          "name": "variable.parameter.koto",
+          "match": "\\$([[:alpha:]_][[:alnum:]_]*)"
+        },
+        {
+          "name": "variable.parameter.koto",
+          "begin": "\\${",
+          "end": "}",
+          "patterns": [
+            {
+              "include": "#all"
+            }
+          ]
         }
       ]
     }
