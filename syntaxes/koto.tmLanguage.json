@@ -43,9 +43,6 @@
         {
           "name": "constant.character.escape.koto",
           "match": "\\\\."
-        },
-        {
-          "include": "#comment-block"
         }
       ]
     },
