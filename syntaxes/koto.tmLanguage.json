@@ -162,7 +162,7 @@
         },
         {
           "name": "punctuation.meta.decorator.koto",
-          "match": "@"
+          "match": "@([[:alpha:]_][[:alnum:]_]*)?"
         }
       ]
     },
