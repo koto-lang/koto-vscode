@@ -189,6 +189,9 @@
         },
         {
           "include": "#string-double-quoted"
+        },
+        {
+          "include": "#string-raw"
         }
       ]
     },
@@ -255,6 +258,10 @@
           ]
         }
       ]
+    },
+    "string-raw": {
+      "name": "string.quoted.raw.koto",
+      "match": "r(#{0,255})(\"|').*?\\2\\1"
     }
   },
   "scopeName": "source.koto"
