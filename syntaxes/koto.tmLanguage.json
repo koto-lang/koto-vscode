@@ -86,7 +86,7 @@
         },
         {
           "name": "keyword.control.import.koto",
-          "match": "\\b(export|from|import)\\b"
+          "match": "\\b(export|from|import|as)\\b"
         },
         {
           "name": "keyword.other",
