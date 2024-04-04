@@ -28,10 +28,10 @@
           "include": "#section"
         },
         {
-          "include": "#string"
+          "include": "#identifier"
         },
         {
-          "include": "#identifier"
+          "include": "#string"
         }
       ]
     },
@@ -225,11 +225,7 @@
       "patterns": [
         {
           "name": "constant.character.escape.koto",
-          "match": "\\\\['$rnt\"\\\\]"
-        },
-        {
-          "name": "constant.character.escape.koto",
-          "match": "\\\\$"
+          "match": "\\\\['rnt$\"\\\\]"
         },
         {
           "name": "constant.character.escape.koto",
@@ -245,11 +241,7 @@
       "patterns": [
         {
           "name": "variable.parameter.koto",
-          "match": "\\$([[:alpha:]_][[:alnum:]_]*)"
-        },
-        {
-          "name": "variable.parameter.koto",
-          "begin": "\\${",
+          "begin": "{",
           "end": "}",
           "patterns": [
             {
