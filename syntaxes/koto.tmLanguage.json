@@ -1,7 +1,12 @@
 {
   "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
   "name": "Koto",
-  "patterns": [{ "include": "#all" }],
+  "scopeName": "source.koto",
+  "patterns": [
+    {
+      "include": "#all"
+    }
+  ],
   "repository": {
     "all": {
       "patterns": [
@@ -26,6 +31,12 @@
         },
         {
           "include": "#section"
+        },
+        {
+          "include": "#let"
+        },
+        {
+          "include": "#function"
         },
         {
           "include": "#identifier"
@@ -157,10 +168,6 @@
           "match": ","
         },
         {
-          "name": "punctuation.definition.parameters.koto",
-          "match": "\\|"
-        },
-        {
           "name": "punctuation.meta.decorator.koto",
           "match": "@([[:alpha:]_][[:alnum:]_]*)?"
         }
@@ -172,13 +179,21 @@
           "name": "punctuation.brackets.curly.koto",
           "begin": "{",
           "end": "}",
-          "patterns": [{ "include": "#all" }]
+          "patterns": [
+            {
+              "include": "#all"
+            }
+          ]
         },
         {
           "name": "punctuation.brackets.square.koto",
           "begin": "\\[",
           "end": "]",
-          "patterns": [{ "include": "#all" }]
+          "patterns": [
+            {
+              "include": "#all"
+            }
+          ]
         }
       ]
     },
@@ -254,7 +269,112 @@
     "string-raw": {
       "name": "string.quoted.raw.koto",
       "match": "r(#{0,255})(\"|').*?\\2\\1"
+    },
+    "id_with_type": {
+      "patterns": [
+        {
+          "match": "([[:alpha:]_][[:alnum:]_]*)(:\\s*([[:alpha:]_][[:alnum:]_]*))?",
+          "captures": {
+            "1": {
+              "name": "variable.other.koto"
+            },
+            "3": {
+              "name": "storage.type.koto"
+            }
+          }
+        }
+      ]
+    },
+    "let": {
+      "patterns": [
+        {
+          "begin": "\\blet\\b",
+          "beginCaptures": {
+            "0": {
+              "name": "keyword.control.koto"
+            }
+          },
+          "end": "\\=",
+          "endCaptures": {
+            "0": {
+              "name": "keyword.operator.assignment.koto"
+            }
+          },
+          "patterns": [
+            {
+              "include": "#id_with_type"
+            }
+          ]
+        }
+      ]
+    },
+    "function": {
+      "patterns": [
+        {
+          "begin": "\\|",
+          "beginCaptures": {
+            "0": {
+              "name": "keyword.other.function-definition.koto"
+            }
+          },
+          "end": "\\|",
+          "endCaptures": {
+            "0": {
+              "name": "punctuation.definition.arguments.end.koto"
+            }
+          },
+          "patterns": [
+            {
+              "include": "#function_arguments"
+            },
+            {
+              "include": "#return_type"
+            }
+          ]
+        }
+      ]
+    },
+    "function_arguments": {
+      "patterns": [
+        {
+          "begin": "\\(",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.definition.arguments.begin.koto"
+            }
+          },
+          "end": "\\)",
+          "endCaptures": {
+            "0": {
+              "name": "punctuation.definition.arguments.end.koto"
+            }
+          },
+          "patterns": [
+            {
+              "include": "#function_arguments"
+            }
+          ]
+        },
+        {
+          "match": ",",
+          "name": "punctuation.separator.parameters.koto"
+        },
+        {
+          "include": "#id_with_type"
+        }
+      ]
+    },
+    "return_type": {
+      "patterns": [
+        {
+          "match": "->\\s*([[:alpha:]_][[:alnum:]_]*)",
+          "captures": {
+            "1": {
+              "name": "storage.type.koto"
+            }
+          }
+        }
+      ]
     }
-  },
-  "scopeName": "source.koto"
+  }
 }
