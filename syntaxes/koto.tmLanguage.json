@@ -60,16 +60,40 @@
     "identifier": {
       "patterns": [
         {
-          "name": "variable.name",
-          "match": "([[:alpha:]_][[:alnum:]_]*)"
-        },
-        {
-          "name": "entity.name.function.koto",
-          "match": "\\b([[:alpha:]_][[:alnum:]_]*)(?=\\:)\\b"
-        },
-        {
           "name": "entity.name.function.koto",
           "match": "\\b(?!\\.\\.)(?<=\\.)([[:alpha:]_][[:alnum:]_]*)\\b"
+        },
+        {
+          "match": "([[:alpha:]_][[:alnum:]_]*)((:)\\s*([[:alpha:]_][[:alnum:]_]*\\??))?\\b",
+          "captures": {
+            "1": {
+              "name": "entitity.name.koto"
+            },
+            "3": {
+              "name": "punctuation.separator.koto"
+            },
+            "4": {
+              "name": "storage.type.koto"
+            }
+          }
+        },
+        {
+          "match": "(@[[:alpha:]_][[:alnum:]_]*)(\\s*[[:alpha:]_][[:alnum:]_]*)?\\s*(:|=)",
+          "captures": {
+            "1": {
+              "name": "entity.name.class.koto"
+            },
+            "2": {
+              "name": "entity.name.function.koto"
+            },
+            "3": {
+              "name": "punctuation.separator.koto"
+            }
+          }
+        },
+        {
+          "name": "entity.name.class.koto",
+          "match": "(@[[:alpha:]_][[:alnum:]_]*)"
         }
       ]
     },
@@ -149,6 +173,10 @@
         },
         {
           "name": "keyword.operator.koto",
+          "match": "->|\\?"
+        },
+        {
+          "name": "keyword.operator.koto",
           "match": "\\.\\.=?"
         }
       ]
@@ -166,10 +194,6 @@
         {
           "name": "punctuation.comma.koto",
           "match": ","
-        },
-        {
-          "name": "punctuation.meta.decorator.koto",
-          "match": "@([[:alpha:]_][[:alnum:]_]*)?"
         }
       ]
     },
@@ -273,7 +297,7 @@
     "id_with_type": {
       "patterns": [
         {
-          "match": "([[:alpha:]_][[:alnum:]_]*)(:\\s*([[:alpha:]_][[:alnum:]_]*))?",
+          "match": "([[:alpha:]_][[:alnum:]_]*)(:\\s*([[:alpha:]_][[:alnum:]_]*\\??))?",
           "captures": {
             "1": {
               "name": "variable.other.koto"
@@ -317,10 +341,16 @@
               "name": "keyword.other.function-definition.koto"
             }
           },
-          "end": "\\|",
+          "end": "(\\|)(\\s*(->)\\s*([[:alpha:]_][[:alnum:]_]*\\??))?",
           "endCaptures": {
-            "0": {
+            "1": {
               "name": "punctuation.definition.arguments.end.koto"
+            },
+            "3": {
+              "name": "keyword.operator.koto"
+            },
+            "4": {
+              "name": "storage.type.koto"
             }
           },
           "patterns": [
@@ -367,7 +397,7 @@
     "return_type": {
       "patterns": [
         {
-          "match": "->\\s*([[:alpha:]_][[:alnum:]_]*)",
+          "match": "",
           "captures": {
             "1": {
               "name": "storage.type.koto"
