@@ -2,11 +2,13 @@
   "name": "koto",
   "displayName": "Koto",
   "description": "Koto support for Visual Studio Code",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "engines": {
     "vscode": "^1.54.0"
   },
-  "categories": ["Programming Languages"],
+  "categories": [
+    "Programming Languages"
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/koto-lang/koto-vscode"
@@ -17,8 +19,13 @@
     "languages": [
       {
         "id": "koto",
-        "aliases": ["Koto", "koto"],
-        "extensions": ["koto"],
+        "aliases": [
+          "Koto",
+          "koto"
+        ],
+        "extensions": [
+          "koto"
+        ],
         "configuration": "./language-configuration.json"
       }
     ],
