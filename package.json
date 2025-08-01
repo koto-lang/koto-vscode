@@ -97,7 +97,7 @@
     "@types/node": "^24.1.0",
     "@types/vscode": "^1.102.0",
     "@vscode/vsce": "^3.6.0",
-    "typescript": "^5.4.5"
+    "typescript": "~5.4.0"
   },
   "dependencies": {
     "@types/follow-redirects": "^1.14.4",
