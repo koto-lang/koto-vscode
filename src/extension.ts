@@ -134,10 +134,6 @@ async function getStoredVersion(versionFilePath: string): Promise<string | null>
     }
 }
 
-async function isValidBinary(binaryPath: string): Promise<boolean> {
-    return fs.existsSync(binaryPath);
-}
-
 async function downloadAndExtract(context: vscode.ExtensionContext, release: GitHubRelease, progress?: vscode.Progress<{ message?: string; increment?: number }>): Promise<void> {
     const binaryName = getPlatformBinaryName();
     const asset = release.assets.find(a => a.name === binaryName);
@@ -188,10 +184,20 @@ async function ensureKotoLs(context: vscode.ExtensionContext, serverPath: string
     const versionFilePath = path.join(context.globalStorageUri.fsPath, 'version.txt');
 
     const currentVersion = await getStoredVersion(versionFilePath);
-    const release = await getLatestRelease();
+
+    let release: GitHubRelease;
+    try {
+        release = await getLatestRelease();
+    } catch (error) {
+        // Offline mode: use existing binary if available
+        if (currentVersion && fs.existsSync(extensionBinaryPath)) {
+            return extensionBinaryPath;
+        }
+        throw `Cannot download Koto-ls and no existing installation found: ${error}`;
+    }
 
     // Check if current installation is up to date
-    if (currentVersion && await isValidBinary(extensionBinaryPath)) {
+    if (currentVersion && fs.existsSync(extensionBinaryPath)) {
         if (currentVersion === release.tag_name) {
             return extensionBinaryPath;
         }
