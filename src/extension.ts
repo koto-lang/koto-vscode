@@ -138,7 +138,7 @@ async function isValidBinary(binaryPath: string): Promise<boolean> {
     return fs.existsSync(binaryPath);
 }
 
-async function downloadAndExtract(context: vscode.ExtensionContext, release: GitHubRelease): Promise<void> {
+async function downloadAndExtract(context: vscode.ExtensionContext, release: GitHubRelease, progress?: vscode.Progress<{ message?: string; increment?: number }>): Promise<void> {
     const binaryName = getPlatformBinaryName();
     const asset = release.assets.find(a => a.name === binaryName);
 
@@ -157,16 +157,21 @@ async function downloadAndExtract(context: vscode.ExtensionContext, release: Git
     }
 
     // Download and extract
+    progress?.report({ message: 'Downloading binary...', increment: 20 });
     await downloadFile(asset.browser_download_url, archivePath);
+
+    progress?.report({ message: 'Extracting archive...', increment: 30 });
     const extractedBinaryPath = await extractArchive(archivePath, extractDir);
 
     // Install binary
+    progress?.report({ message: 'Installing binary...', increment: 30 });
     fs.copyFileSync(extractedBinaryPath, extensionBinaryPath);
     if (process.platform !== 'win32') {
         fs.chmodSync(extensionBinaryPath, '755');
     }
 
     // Store version and cleanup
+    progress?.report({ message: 'Cleaning up...', increment: 20 });
     fs.writeFileSync(path.join(storageDir, 'version.txt'), release.tag_name);
     fs.unlinkSync(archivePath);
     fs.rmSync(extractDir, { recursive: true, force: true });
@@ -190,18 +195,38 @@ async function ensureKotoLs(context: vscode.ExtensionContext, serverPath: string
         if (currentVersion === release.tag_name) {
             return extensionBinaryPath;
         }
-        vscode.window.showInformationMessage(`Updating koto-ls from ${currentVersion} to ${release.tag_name}`);
-    } else {
-        vscode.window.showInformationMessage('Downloading koto-ls language server...');
-    }
 
-    try {
-        await downloadAndExtract(context, release);
-        vscode.window.showInformationMessage(`Downloaded koto-ls ${release.tag_name} successfully!`);
-        return extensionBinaryPath;
-    } catch (error) {
-        vscode.window.showErrorMessage(`Failed to download koto-ls: ${error}`);
-        throw error;
+        // Update with progress
+        return await vscode.window.withProgress({
+            location: vscode.ProgressLocation.Notification,
+            title: `Updating Koto-ls ${currentVersion} to ${release.tag_name}`,
+            cancellable: false
+        }, async (progress) => {
+            try {
+                await downloadAndExtract(context, release, progress);
+                vscode.window.showInformationMessage(`Koto-ls has been updated to ${release.tag_name} successfully!`);
+                return extensionBinaryPath;
+            } catch (error) {
+                vscode.window.showErrorMessage(`Failed to update Koto-ls: ${error}`);
+                throw error;
+            }
+        });
+    } else {
+        // Download with progress
+        return await vscode.window.withProgress({
+            location: vscode.ProgressLocation.Notification,
+            title: 'Installing koto-ls',
+            cancellable: false
+        }, async (progress) => {
+            try {
+                await downloadAndExtract(context, release, progress);
+                vscode.window.showInformationMessage(`Koto-ls ${release.tag_name} has been installed successfully!`);
+                return extensionBinaryPath;
+            } catch (error) {
+                vscode.window.showErrorMessage(`Failed to install Koto-ls: ${error}`);
+                throw error;
+            }
+        });
     }
 }
 
@@ -254,14 +279,14 @@ export async function activate(context: vscode.ExtensionContext) {
                 try {
                     await client.stop();
                     await client.start();
-                    vscode.window.showInformationMessage('Koto Language Server restarted');
+                    vscode.window.showInformationMessage('Koto-ls restarted');
                 } catch (error) {
-                    vscode.window.showErrorMessage(`Failed to restart server: ${error}`);
+                    vscode.window.showErrorMessage(`Failed to restart Koto-ls: ${error}`);
                 }
             }),
         );
     } catch (error) {
-        vscode.window.showErrorMessage(`Failed to start Koto Language Server: ${error}`);
+        vscode.window.showErrorMessage(`Failed to start Koto-ls: ${error}`);
     }
 }
 
