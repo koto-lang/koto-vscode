@@ -2,6 +2,7 @@
   "name": "koto",
   "displayName": "Koto",
   "description": "Koto support for Visual Studio Code",
+  "icon": "assets/icon.png",
   "version": "0.17.0",
   "categories": [
     "Programming Languages"
