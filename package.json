@@ -15,6 +15,15 @@
   },
   "publisher": "koto-lang",
   "license": "MIT",
+  "keywords": [
+    "koto",
+    "language server",
+    "lsp"
+  ],
+  "main": "./out/extension.js",
+  "activationEvents": [
+    "onLanguage:koto"
+  ],
   "contributes": {
     "languages": [
       {
@@ -35,6 +44,64 @@
         "scopeName": "source.koto",
         "path": "./syntaxes/koto.tmLanguage.json"
       }
+    ],
+    "configuration": {
+      "type": "object",
+      "title": "Koto Language Server",
+      "properties": {
+        "koto.server.path": {
+          "type": "string",
+          "description": "Path to the koto-ls executable"
+        },
+        "koto.server.args": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": [],
+          "description": "Arguments to pass to koto-ls"
+        },
+        "koto.trace.server": {
+          "scope": "window",
+          "type": "string",
+          "enum": [
+            "off",
+            "messages",
+            "verbose"
+          ],
+          "default": "off",
+          "description": "Traces the communication between VS Code and the language server."
+        }
+      }
+    },
+    "commands": [
+      {
+        "command": "koto.restartServer",
+        "title": "Restart Language Server",
+        "category": "Koto"
+      },
+      {
+        "command": "koto.checkForUpdates",
+        "title": "Check for Language Server Updates",
+        "category": "Koto"
+      }
     ]
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "package": "vsce package"
+  },
+  "devDependencies": {
+    "@types/node": "^24.1.0",
+    "@types/vscode": "^1.102.0",
+    "@vscode/vsce": "^3.6.0",
+    "typescript": "~5.4.0"
+  },
+  "dependencies": {
+    "@types/follow-redirects": "^1.14.4",
+    "follow-redirects": "^1.15.11",
+    "vscode-languageclient": "^9.0.1"
   }
 }
