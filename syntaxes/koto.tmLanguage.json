@@ -14,7 +14,7 @@
           "include": "#comment-block"
         },
         {
-          "name": "keyword.comment.line.koto",
+          "name": "comment.line.koto",
           "match": "#.*"
         },
         {
