@@ -338,7 +338,7 @@
           "begin": "\\|",
           "beginCaptures": {
             "0": {
-              "name": "keyword.other.function-definition.koto"
+              "name": "punctuation.definition.arguments.start.koto"
             }
           },
           "end": "(\\|)(\\s*(->)\\s*([[:alpha:]_][[:alnum:]_]*\\??))?",
