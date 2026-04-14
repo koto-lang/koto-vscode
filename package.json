@@ -22,14 +22,15 @@
     "vscode": "^1.54.0"
   },
   "dependencies": {
-    "@types/follow-redirects": "^1.14.4",
     "follow-redirects": "^1.15.11",
     "vscode-languageclient": "^9.0.1"
   },
   "devDependencies": {
+    "@types/follow-redirects": "^1.14.4",
     "@types/node": "^24.1.0",
     "@types/vscode": "^1.54.0",
-    "@vscode/vsce": "^3.6.0",
+    "@vscode/vsce": "^3.7.1",
+    "esbuild": "^0.25.12",
     "typescript": "~5.4.0"
   },
   "main": "./out/extension.js",
@@ -100,9 +101,10 @@
     ]
   },
   "scripts": {
-    "vscode:prepublish": "npm run compile",
-    "compile": "tsc -p ./",
-    "watch": "tsc -watch -p ./",
+    "vscode:prepublish": "npm run bundle",
+    "check": "tsc -noEmit -p ./",
+    "watch": "node esbuild.js --watch",
+    "bundle": "node esbuild.js",
     "package": "vsce package"
   }
 }

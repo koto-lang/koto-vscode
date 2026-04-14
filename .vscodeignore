@@ -1,3 +1,11 @@
-.vscode/**
-.vscode-test/**
+.github/
+.vscode/
+.vscode-test/
+node_modules/
+out/**.map
+src/
+
 .gitignore
+esbuild.js
+package-lock.json
+tsconfig.json
